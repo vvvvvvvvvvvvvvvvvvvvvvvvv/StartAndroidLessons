@@ -16,6 +16,8 @@
     </TableRow>
 
     <TableRow>
+
+
         <TextView
             android:layout_weight="0.5"
             android:text="Email"
