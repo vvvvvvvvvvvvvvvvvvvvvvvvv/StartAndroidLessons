@@ -13,64 +13,72 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    LinearLayout llMain;
+    RadioGroup rgGravity;
+    EditText etName;
+    Button btnCreate;
+    Button btnClear;
+
+    int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+
+    /** Called when the activity is first created. */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // creating LinearLayout
-        LinearLayout linLayout = new LinearLayout(this);
-        // specifying vertical orientation
-        linLayout.setOrientation(LinearLayout.VERTICAL);
-        // creating LayoutParams
-        LinearLayout.LayoutParams linLayoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // set LinearLayout as a root element of the screen
-        setContentView(linLayout, linLayoutParam);
+        setContentView(R.layout.activity_main);
 
+        llMain = (LinearLayout) findViewById(R.id.llMain);
+        rgGravity = (RadioGroup) findViewById(R.id.rgGravity);
+        etName = (EditText) findViewById(R.id.etName);
 
+        btnCreate = (Button) findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(this);
 
-        LinearLayout.LayoutParams lpView = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        TextView tv = new TextView(this);
-        tv.setText("TextView");
-        tv.setLayoutParams(lpView);
-        linLayout.addView(tv);
-
-
-        Button btn = new Button(this);
-        btn.setText("Button");
-        linLayout.addView(btn, lpView);
-
-
-        LinearLayout.LayoutParams leftMarginParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        leftMarginParams.leftMargin = 50;
-
-        Button btn1 = new Button(this);
-        btn1.setText("Button1");
-        linLayout.addView(btn1, leftMarginParams);
-
-
-        LinearLayout.LayoutParams rightGravityParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rightGravityParams.gravity = Gravity.RIGHT;
-
-        Button btn2 = new Button(this);
-        btn2.setText("Button2");
-        linLayout.addView(btn2, rightGravityParams);
-
-
-
-
-
-
-
+        btnClear = (Button) findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(this);
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnCreate:
+                // creating LayoutParams with width and height defined by content
+                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        wrapContent, wrapContent);
+                // a variable to store alignment, will be LEFT by default
+                int btnGravity = Gravity.LEFT;
+                // define which RadioButton is checked and fill in bntGravity correspondingly
+                switch (rgGravity.getCheckedRadioButtonId()) {
+                    case R.id.rbLeft:
+                        btnGravity = Gravity.LEFT;
+                        break;
+                    case R.id.rbCenter:
+                        btnGravity = Gravity.CENTER_HORIZONTAL;
+                        break;
+                    case R.id.rbRight:
+                        btnGravity = Gravity.RIGHT;
+                        break;
+                }
+                // put the received alignment value into LayoutParams
+                lParams.gravity = btnGravity;
+
+                // create a Button, change text and add it to the LinearLayout
+                Button btnNew = new Button(this);
+                btnNew.setText(etName.getText().toString());
+                llMain.addView(btnNew, lParams);
+
+                break;
+        }
+    }
 }
