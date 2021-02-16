@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 tvColor.setTextColor(Color.BLUE);
                 tvColor.setText("Text color = blue");
                 break;
+
+
             // menu items for tvSize
             case MENU_SIZE_22:
                 tvSize.setTextSize(22);
