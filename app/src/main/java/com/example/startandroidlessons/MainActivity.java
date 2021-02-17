@@ -3,9 +3,11 @@ package com.example.startandroidlessons;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ShareCompat;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,50 +22,60 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.xml.transform.sax.TemplatesHandler;
 
-public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    SeekBar sbWeight;
-    Button btn1;
-    Button btn2;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Button plus, minus, division, multiplication;
+    EditText num1, num2;
+    TextView result;
+    int firstNum, secondNum;
 
-    LinearLayout.LayoutParams lParams1;
-    LinearLayout.LayoutParams lParams2;
-
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        plus = findViewById(R.id.plus);
+        minus = findViewById(R.id.minus);
+        division = findViewById(R.id.division);
+        multiplication = findViewById(R.id.multiplication);
+        num1 = findViewById(R.id.num1);
+        num2 = findViewById(R.id.num2);
+        result = findViewById(R.id.result);
 
-        sbWeight = (SeekBar) findViewById(R.id.sbWeight);
-        sbWeight.setOnSeekBarChangeListener(this);
+        plus.setOnClickListener(this);
+        minus.setOnClickListener(this);
+        division.setOnClickListener(this);
+        multiplication.setOnClickListener(this);
 
-        btn1 = (Button) findViewById(R.id.btn1);
-        btn2 = (Button) findViewById(R.id.btn2);
 
-        lParams1 = (LinearLayout.LayoutParams) btn1.getLayoutParams();
-        lParams2 = (LinearLayout.LayoutParams) btn2.getLayoutParams();
+
+
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
-        int leftValue = progress;
-        int rightValue = seekBar.getMax() - progress;
-        // настраиваем вес
-        lParams1.weight = leftValue;
-        lParams2.weight = rightValue;
-        // в текст кнопок пишем значения переменных
-        btn1.setText(String.valueOf(leftValue));
-        btn2.setText(String.valueOf(rightValue));
-    }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-    }
+    public void onClick(View view) {
+        if(num1.getText().toString().isEmpty() || num2.getText().toString().isEmpty()){
+            result.setText("please fill in all fields");
+            return;
+        }
+        firstNum = Integer.valueOf(num1.getText().toString());
+        secondNum = Integer.valueOf(num2.getText().toString());
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
+        switch (view.getId()){
+            case R.id.plus:
+             result.setText(String.valueOf(firstNum + secondNum));
+             break;
+            case R.id.minus:
+                result.setText(String.valueOf(firstNum - secondNum));
+                break;
+            case R.id.division:
+                result.setText(String.valueOf(firstNum / secondNum));
+                break;
+            case R.id.multiplication:
+                result.setText(String.valueOf(firstNum * secondNum));
+                break;
+        }
     }
 }
