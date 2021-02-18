@@ -9,13 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SecondActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            ></activity>
+        <activity android:name=".DateActivity">
+            <intent-filter>
+                <action android:name="com.example.intent.action.showtime" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TimeActivity" >
+            <intent-filter>
+                <action android:name="com.example.intent.action.showdate" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
