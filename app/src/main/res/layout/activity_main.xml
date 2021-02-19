@@ -4,19 +4,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    <Button
-        android:id="@+id/btnName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
-        android:text="Input name">
-    </Button>
     <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvText"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Your name is ">
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="Hello World"
+        android:textSize="20sp">
     </TextView>
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Color">
+        </Button>
+        <Button
+            android:id="@+id/btnAlign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="Alignment">
+        </Button>
+    </LinearLayout>
 </LinearLayout>
