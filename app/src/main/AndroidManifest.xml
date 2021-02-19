@@ -9,14 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DateActivity">
+        <activity android:name=".DateAndTimeActivity">
             <intent-filter>
                 <action android:name="com.example.intent.action.showtime" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".TimeActivity" >
-            <intent-filter>
                 <action android:name="com.example.intent.action.showdate" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
