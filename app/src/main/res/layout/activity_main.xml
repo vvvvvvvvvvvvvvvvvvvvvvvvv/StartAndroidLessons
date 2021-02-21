@@ -4,26 +4,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/linLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Linear Layout: ">
-        </TextView>
-    </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/relLayout"
+        android:text="Staff list"
+        android:layout_gravity="center_horizontal">
+    </TextView>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Relative Layout: ">
-        </TextView>
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/scroll">
+        <LinearLayout
+            android:id="@+id/linLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
