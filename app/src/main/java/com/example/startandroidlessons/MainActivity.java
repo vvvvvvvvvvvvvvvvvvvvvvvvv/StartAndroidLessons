@@ -22,8 +22,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     final String LOG_TAG = "myLogs";
 
-    Button btnAdd, btnRead, btnClear;
-    EditText etName, etEmail;
+    Button btnAdd, btnRead, btnClear, btnUpd, btnDel;
+    EditText etName, etEmail, etID;
 
     DBHelper dbHelper;
 
@@ -38,12 +38,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnRead = (Button) findViewById(R.id.btnRead);
         btnRead.setOnClickListener(this);
+        btnUpd = (Button) findViewById(R.id.btnUpdate);
+        btnUpd.setOnClickListener(this);
+
+        btnDel = (Button) findViewById(R.id.btnDelete);
+        btnDel.setOnClickListener(this);
 
         btnClear = (Button) findViewById(R.id.btnClear);
         btnClear.setOnClickListener(this);
 
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
+        etID = (EditText) findViewById(R.id.id);
 
         dbHelper = new DBHelper(this);
     }
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ContentValues cv = new ContentValues();
         String name = etName.getText().toString();
         String email = etEmail.getText().toString();
+        String id = etID.getText().toString();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         switch (v.getId()) {
@@ -88,6 +95,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int clearCount = db.delete("mytable", null, null);
                 Log.d(LOG_TAG, "deleted rows count = " + clearCount);
                 break;
+            case R.id.btnDelete:
+                int delete = db.delete("mytable", "id = " + id, null);
+                break;
+            case R.id.btnUpdate:
+                cv.put("name", name);
+                cv.put("email", email);
+                int update = db.update("mytable", cv,"id = ?" , new String[]{id});
+                break;
+
+
         }
         dbHelper.close();
 
