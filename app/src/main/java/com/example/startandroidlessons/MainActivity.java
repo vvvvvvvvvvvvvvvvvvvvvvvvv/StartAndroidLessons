@@ -1,6 +1,7 @@
 package com.example.startandroidlessons;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,46 +9,63 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
 
-    String[] name = { "Иван", "Марья", "Петр", "Антон", "Даша", "Борис",
-            "Костя", "Игорь" };
-    String[] position = { "Программер", "Бухгалтер", "Программер",
-            "Программер", "Бухгалтер", "Директор", "Программер", "Охранник" };
-    int salary[] = { 13000, 10000, 13000, 13000, 10000, 15000, 13000, 8000 };
+    // имена атрибутов для Map
+    final String ATTRIBUTE_NAME_TEXT = "text";
+    final String ATTRIBUTE_NAME_CHECKED = "checked";
+    final String ATTRIBUTE_NAME_IMAGE = "image";
 
-    int[] colors = new int[2];
-
+    ListView lvSimple;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        colors[0] = Color.parseColor("#559966CC");
-        colors[1] = Color.parseColor("#55336699");
+// массивы данных
+        String[] texts = { "sometext 1", "sometext 2", "sometext 3",
+                "sometext 4", "sometext 5" };
+        boolean[] checked = { true, false, false, true, false };
+        int img = R.drawable.ic_launcher_background;
 
-        LinearLayout linearLayout = findViewById(R.id.linLayout);
-
-        LayoutInflater ltInflater = getLayoutInflater();
-
-        for (int i = 0; i < name.length; i++) {
-            Log.d("myLogs", "i = " + i);
-            View item = ltInflater.inflate(R.layout.item, linearLayout, false);
-            TextView tvName = (TextView) item.findViewById(R.id.tvName);
-            tvName.setText(name[i]);
-            TextView tvPosition = (TextView) item.findViewById(R.id.tvPosition);
-            tvPosition.setText("Должность: " + position[i]);
-            TextView tvSalary = (TextView) item.findViewById(R.id.tvSalary);
-            tvSalary.setText("Оклад: " + String.valueOf(salary[i]));
-            item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-            item.setBackgroundColor(colors[i % 2]);
-            linearLayout.addView(item);
+        // упаковываем данные в понятную для адаптера структуру
+        ArrayList<Map<String, Object>> data = new ArrayList<>(
+                texts.length);
+        Map<String, Object> m;
+        for (int i = 0; i < texts.length; i++) {
+            m = new HashMap<String, Object>();
+            m.put(ATTRIBUTE_NAME_TEXT, texts[i]);
+            m.put(ATTRIBUTE_NAME_CHECKED, checked[i]);
+            m.put(ATTRIBUTE_NAME_IMAGE, img);
+            data.add(m);
         }
+
+        // массив имен атрибутов, из которых будут читаться данные
+        String[] from = { ATTRIBUTE_NAME_TEXT, ATTRIBUTE_NAME_CHECKED,
+                ATTRIBUTE_NAME_IMAGE };
+        // массив ID View-компонентов, в которые будут вставлять данные
+        int[] to = { R.id.tvText, R.id.cbChecked, R.id.ivImg };
+
+        // создаем адаптер
+        SimpleAdapter sAdapter = new SimpleAdapter(this, data, R.layout.item,
+                from, to);
+
+        // определяем список и присваиваем ему адаптер
+        lvSimple = (ListView) findViewById(R.id.lvSimple);
+        lvSimple.setAdapter(sAdapter);
     }
 
 
