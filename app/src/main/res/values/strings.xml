@@ -1,8 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">StartAndroidLessons</string>
-    <string name="hello_world">Hello World!чсмччччччччччччччччччччччччччччччччччччччччч</string>
-    <string name="multiplication">*</string>
-    <string name="plus">+</string>
-    <string name="minus">/</string>
-    <string name="division">/</string>
+    <string name="app_name">SimpleCursorAdapter</string>
+    <string name="add_record">Добавить запись</string>
+    <string name="delete_record">Удалить запись</string>
+    <string name="box">Корзина</string>
 </resources>
