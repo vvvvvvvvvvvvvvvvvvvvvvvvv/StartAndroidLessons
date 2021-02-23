@@ -6,7 +6,9 @@ import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,78 +25,75 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
+    private static final int CM_DELETE_ID = 1;
 
     // имена атрибутов для Map
     final String ATTRIBUTE_NAME_TEXT = "text";
-    final String ATTRIBUTE_NAME_PB = "pb";
-    final String ATTRIBUTE_NAME_LL = "ll";
+    final String ATTRIBUTE_NAME_IMAGE = "image";
 
     ListView lvSimple;
+    SimpleAdapter sAdapter;
+    ArrayList<Map<String, Object>> data;
+    Map<String, Object> m;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // массив данных
-        int load[] = { 41, 48, 22, 35, 30, 67, 51, 88 };
-
         // упаковываем данные в понятную для адаптера структуру
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
-                load.length);
-        Map<String, Object> m;
-        for (int i = 0; i < load.length; i++) {
+        data = new ArrayList<Map<String, Object>>();
+        for (int i = 1; i < 5; i++) {
             m = new HashMap<String, Object>();
-            m.put(ATTRIBUTE_NAME_TEXT, "Day " + (i+1) + ". Load: " + load[i] + "%");
-            m.put(ATTRIBUTE_NAME_PB, load[i]);
-            m.put(ATTRIBUTE_NAME_LL, load[i]);
+            m.put(ATTRIBUTE_NAME_TEXT, "sometext " + i);
+            m.put(ATTRIBUTE_NAME_IMAGE, R.drawable.ic_launcher_foreground);
             data.add(m);
         }
 
         // массив имен атрибутов, из которых будут читаться данные
-        String[] from = { ATTRIBUTE_NAME_TEXT, ATTRIBUTE_NAME_PB,
-                ATTRIBUTE_NAME_LL };
+        String[] from = { ATTRIBUTE_NAME_TEXT, ATTRIBUTE_NAME_IMAGE };
         // массив ID View-компонентов, в которые будут вставлять данные
-        int[] to = { R.id.tvLoad, R.id.pbLoad, R.id.llLoad };
+        int[] to = { R.id.tvText, R.id.ivImg };
 
         // создаем адаптер
-        SimpleAdapter sAdapter = new SimpleAdapter(this, data, R.layout.item,
-                from, to);
-        // Указываем адаптеру свой биндер
-        sAdapter.setViewBinder(new MyViewBinder());
+        sAdapter = new SimpleAdapter(this, data, R.layout.item, from, to);
 
         // определяем список и присваиваем ему адаптер
         lvSimple = (ListView) findViewById(R.id.lvSimple);
         lvSimple.setAdapter(sAdapter);
+        registerForContextMenu(lvSimple);
     }
 
-    class MyViewBinder implements SimpleAdapter.ViewBinder {
+    public void onButtonClick(View v) {
+        // создаем новый Map
+        m = new HashMap<String, Object>();
+        m.put(ATTRIBUTE_NAME_TEXT, "sometext " + (data.size() + 1));
+        m.put(ATTRIBUTE_NAME_IMAGE, R.drawable.ic_launcher_background);
+        // добавляем его в коллекцию
+        data.add(m);
+        // уведомляем, что данные изменились
+        sAdapter.notifyDataSetChanged();
+    }
 
-        int red = getResources().getColor(R.color.Red);
-        int orange = getResources().getColor(R.color.Orange);
-        int green = getResources().getColor(R.color.Green);
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, CM_DELETE_ID, 0, "Удалить запись");
+    }
 
-        @Override
-        public boolean setViewValue(View view, Object data,
-                                    String textRepresentation) {
-            int i = 0;
-            switch (view.getId()) {
-                // LinearLayout
-                case R.id.llLoad:
-                    i = ((Integer) data).intValue();
-                    if (i < 40) view.setBackgroundColor(green); else
-                    if (i < 70) view.setBackgroundColor(orange); else
-                        view.setBackgroundColor(red);
-                    return true;
-                // ProgressBar
-                case R.id.pbLoad:
-                    i = ((Integer) data).intValue();
-                    ((ProgressBar)view).setProgress(i);
-                    return true;
-            }
-            return false;
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == CM_DELETE_ID) {
+            // получаем инфу о пункте списка
+            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            // удаляем Map из коллекции, используя позицию пункта в списке
+            data.remove(acmi.position);
+            // уведомляем, что данные изменились
+            sAdapter.notifyDataSetChanged();
+            return true;
         }
+        return super.onContextItemSelected(item);
     }
-
 
 }
