@@ -3,31 +3,34 @@ package com.example.startandroidlessons;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.Button;
+import android.widget.TextView;
 
 
-public class MainActivity extends AppCompatActivity  {
-    String[] data = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
-
-    GridView gvMain;
-    ArrayAdapter<String> adapter;
+public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
+    private TextView textViewUsername;
+    private TextView textViewPassword;
+    private Button button;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        adapter = new ArrayAdapter<String>(this, R.layout.item, R.id.tvText, data);
-        gvMain = (GridView) findViewById(R.id.gvMain);
-        gvMain.setAdapter(adapter);
-        adjustGridView();
-
+        textViewUsername = (TextView) findViewById(R.id.textview_username);
+        textViewPassword = (TextView) findViewById(R.id.textview_password);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener((view) -> {
+            openDialog();
+        }
+        );
     }
-    private void adjustGridView() {
-        gvMain.setNumColumns(GridView.AUTO_FIT);
-        gvMain.setColumnWidth(80);
-        gvMain.setVerticalSpacing(5);
-        gvMain.setHorizontalSpacing(5);
+    public void openDialog() {
+        ExampleDialog exampleDialog = new ExampleDialog();
+        exampleDialog.show(getSupportFragmentManager(), "example dialog");
+    }
+    @Override
+    public void applyTexts(String username, String password) {
+        textViewUsername.setText(username);
+        textViewPassword.setText(password);
     }
 
 }
