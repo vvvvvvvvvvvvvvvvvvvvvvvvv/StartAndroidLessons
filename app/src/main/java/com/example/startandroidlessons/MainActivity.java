@@ -1,36 +1,26 @@
 package com.example.startandroidlessons;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
 
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
-    private TextView textViewUsername;
-    private TextView textViewPassword;
-    private Button button;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    final String LOG_TAG = "myLogs";
+
+    /** Called when the activity is first created. */
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textViewUsername = (TextView) findViewById(R.id.textview_username);
-        textViewPassword = (TextView) findViewById(R.id.textview_password);
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener((view) -> {
-            openDialog();
-        }
-        );
-    }
-    public void openDialog() {
-        ExampleDialog exampleDialog = new ExampleDialog();
-        exampleDialog.show(getSupportFragmentManager(), "example dialog");
-    }
-    @Override
-    public void applyTexts(String username, String password) {
-        textViewUsername.setText(username);
-        textViewPassword.setText(password);
     }
 
+    public void onclick(View v) {
+        MyObject myObj = new MyObject("text", 1);
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra(MyObject.class.getCanonicalName(), myObj);
+        Log.d(LOG_TAG, "startActivity");
+        startActivity(intent);
+    }
 }
