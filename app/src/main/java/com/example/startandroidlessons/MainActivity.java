@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if (isChecked) {
+
                     tvInfo.setVisibility(View.VISIBLE);
                     // показываем информацию
                     h.post(showInfo);
