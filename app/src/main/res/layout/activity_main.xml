@@ -4,29 +4,24 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    <ProgressBar
+    <Button
+        android:id="@+id/btnConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true">
-    </ProgressBar>
+        android:onClick="onclick"
+        android:text="@string/connect">
+    </Button>
     <TextView
-        android:id="@+id/tvInfo"
-        android:layout_width="fill_parent"
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="">
     </TextView>
-    <Button
-        android:id="@+id/btnStart"
+    <ProgressBar
+        android:id="@+id/pbConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onclick"
-        android:text="@string/start">
-    </Button>
-    <Button
-        android:id="@+id/btnTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onclick"
-        android:text="@string/test">
-    </Button>
+        android:indeterminate="true"
+        android:visibility="gone">
+    </ProgressBar>
 </LinearLayout>
