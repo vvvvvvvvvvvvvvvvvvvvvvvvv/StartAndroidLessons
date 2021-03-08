@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Handler</string>
-    <string name="start">Start</string>
-    <string name="test">Test</string>
-    <string name="info">Подробно</string>
+    <string name="start">Start service</string>
+    <string name="stop">Stop service</string>
 </resources>

@@ -1,8 +1,14 @@
 package com.example.startandroidlessons;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,46 +16,25 @@ public class MainActivity extends Activity {
 
     final String LOG_TAG = "myLogs";
 
-    TextView tvInfo;
-
-    /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvInfo = (TextView) findViewById(R.id.tvInfo);
-
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                    runOnUiThread(runn1);
-                    TimeUnit.SECONDS.sleep(1);
-                    tvInfo.postDelayed(runn3, 2000);
-                    tvInfo.post(runn2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        Handler р  = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
             }
-        });
-        t.start();
+        };
+
+
     }
 
-    Runnable runn1 = new Runnable() {
-        public void run() {
-            tvInfo.setText("runn1");
-        }
-    };
+    public void onClickStart(View v) {
+        startService(new Intent(this, MyService.class));
+    }
 
-    Runnable runn2 = new Runnable() {
-        public void run() {
-            tvInfo.setText("runn2");
-        }
-    };
-
-    Runnable runn3 = new Runnable() {
-        public void run() {
-            tvInfo.setText("runn3");
-        }
-    };
+    public void onClickStop(View v) {
+        stopService(new Intent(this, MyService.class));
+    }
 }
