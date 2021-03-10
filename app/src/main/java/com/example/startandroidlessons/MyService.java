@@ -1,14 +1,5 @@
 package com.example.startandroidlessons;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.util.Log;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
@@ -19,63 +10,58 @@ import android.util.Log;
 public class MyService extends Service {
 
     final String LOG_TAG = "myLogs";
-    ExecutorService es;
-    Object someRes;
 
     public void onCreate() {
         super.onCreate();
         Log.d(LOG_TAG, "MyService onCreate");
-        es = Executors.newFixedThreadPool(1);
-        someRes = new Object();
     }
 
     public void onDestroy() {
         super.onDestroy();
         Log.d(LOG_TAG, "MyService onDestroy");
-        someRes = null;
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(LOG_TAG, "MyService onStartCommand");
-        int time = intent.getIntExtra("time", 1);
-        MyRun mr = new MyRun(time, startId);
-        es.execute(mr);
-        return super.onStartCommand(intent, flags, startId);
+        readFlags(flags);
+        MyRun mr = new MyRun(startId);
+        new Thread(mr).start();
+        return START_STICKY;
     }
 
     public IBinder onBind(Intent arg0) {
         return null;
     }
 
+    void readFlags(int flags) {
+        if ((flags&START_FLAG_REDELIVERY) == START_FLAG_REDELIVERY)
+            Log.d(LOG_TAG, "START_FLAG_REDELIVERY");
+        if ((flags&START_FLAG_RETRY) == START_FLAG_RETRY)
+            Log.d(LOG_TAG, "START_FLAG_RETRY");
+    }
+
     class MyRun implements Runnable {
 
-        int time;
         int startId;
 
-        public MyRun(int time, int startId) {
-            this.time = time;
+        public MyRun(int startId) {
             this.startId = startId;
             Log.d(LOG_TAG, "MyRun#" + startId + " create");
         }
 
         public void run() {
-            Log.d(LOG_TAG, "MyRun#" + startId + " start, time = " + time);
+            Log.d(LOG_TAG, "MyRun#" + startId + " start");
             try {
-                TimeUnit.SECONDS.sleep(time);
+                TimeUnit.SECONDS.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            try {
-                Log.d(LOG_TAG, "MyRun#" + startId + " someRes = " + someRes.getClass() );
-            } catch (NullPointerException e) {
-                Log.d(LOG_TAG, "MyRun#" + startId + " error, null pointer");
             }
             stop();
         }
 
         void stop() {
-            Log.d(LOG_TAG, "MyRun#" + startId + " end, stopSelf(" + startId + ")");
-            stopSelf(startId);
+            Log.d(LOG_TAG, "MyRun#" + startId + " end, stopSelfResult("
+                    + startId + ") = " + stopSelfResult(startId));
         }
     }
 }
