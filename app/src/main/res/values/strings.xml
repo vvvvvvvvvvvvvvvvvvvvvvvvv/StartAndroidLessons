@@ -3,4 +3,6 @@
     <string name="app_name">Handler</string>
     <string name="start">Start</string>
     <string name="stop">Stop service</string>
+    <string name="notification_title">Title</string>
+    <string name="notification_text">Text</string>
 </resources>
