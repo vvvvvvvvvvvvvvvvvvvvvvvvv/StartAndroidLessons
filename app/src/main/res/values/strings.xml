@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Handler</string>
+    <string name="app_name">Service</string>
     <string name="start">Start</string>
-    <string name="stop">Stop service</string>
-    <string name="notification_title">Title</string>
-    <string name="notification_text">Text</string>
+    <string name="stop">Stop</string>
+    <string name="bind">Bind</string>
+    <string name="unbind">Unbind</string>
 </resources>
