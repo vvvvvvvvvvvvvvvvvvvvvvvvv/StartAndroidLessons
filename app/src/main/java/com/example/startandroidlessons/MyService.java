@@ -1,64 +1,56 @@
 package com.example.startandroidlessons;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class MyService extends Service {
+    NotificationManager nm;
 
-    final String LOG_TAG = "myLogs";
-
-    MyBinder binder = new MyBinder();
-
-    Timer timer;
-    TimerTask tTask;
-    long interval = 1000;
-
+    @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(LOG_TAG, "MyService onCreate");
-        timer = new Timer();
-        schedule();
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    void schedule() {
-        if (tTask != null) tTask.cancel();
-        if (interval > 0) {
-            tTask = new TimerTask() {
-                public void run() {
-                    Log.d(LOG_TAG, "run");
-                }
-            };
-            timer.schedule(tTask, 1000, interval);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        sendNotif();
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    long upInterval(long gap) {
-        interval = interval + gap;
-        schedule();
-        return interval;
-    }
+    void sendNotif() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-    long downInterval(long gap) {
-        interval = interval - gap;
-        if (interval < 0) interval = 0;
-        schedule();
-        return interval;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "title")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
     }
 
     public IBinder onBind(Intent arg0) {
-        Log.d(LOG_TAG, "MyService onBind");
-        return binder;
-    }
-
-    class MyBinder extends Binder {
-        MyService getService() {
-            return MyService.this;
-        }
+        return null;
     }
 }
