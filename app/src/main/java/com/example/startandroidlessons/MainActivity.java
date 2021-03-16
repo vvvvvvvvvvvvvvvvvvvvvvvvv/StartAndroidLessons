@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -19,9 +22,30 @@ public class MainActivity extends Activity {
     }
 
     public void onClickStart(View v) {
-        startService(new Intent(this, MyService.class).putExtra("time", 3).putExtra("label", "Call 1") );
-        startService(new Intent(this, MyService.class).putExtra("time", 3).putExtra("label", "Call 2") );
-        startService(new Intent(this, MyService.class).putExtra("time", 3).putExtra("label", "Call 3") );
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.inflate(R.menu.menu);
+        popupMenu.setOnMenuItemClickListener((menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu1:
+                    Toast.makeText(getApplicationContext(),
+                            "Вы выбрали PopupMenu 1",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.menu2:
+                    Toast.makeText(getApplicationContext(),
+                            "Вы выбрали PopupMenu 2",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.menu3:
+                    Toast.makeText(getApplicationContext(),
+                            "Вы выбрали PopupMenu 3",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        popupMenu.show();
     }
 
 
